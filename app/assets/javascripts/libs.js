@@ -1,3 +1,4 @@
+//= require sprockets/commonjs
 //= require jquery
 //= require lo-dash
 //= require backbone
