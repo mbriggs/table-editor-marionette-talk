@@ -1,0 +1,31 @@
+<div class="table-header">
+  <h2>Widgets</h2>
+
+  <div>
+    <%= link_to 'New Widget', new_widget_path, class: 'btn btn-large btn-primary' %>
+  </div>
+
+  <br/>
+</div>
+
+<table class='table table-striped table-bordered'>
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Cost</th>
+    <th></th>
+  </tr>
+
+  <% @widgets.each do |widget| %>
+  <tr>
+    <td><%= widget.name %></td>
+    <td><%= widget.description %></td>
+    <td><%= widget.cost %></td>
+    <td>
+      <%= link_to 'Show', widget, class: 'btn' %>
+      <%= link_to 'Edit', edit_widget_path(widget), class: 'btn' %>
+      <%= link_to 'Destroy', widget, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+    </td>
+  </tr>
+  <% end %>
+</table>

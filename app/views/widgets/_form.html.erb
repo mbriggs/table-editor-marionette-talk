@@ -1,0 +1,27 @@
+<%= form_for(@widget, class: "page-form") do |f| %>
+  <% if @widget.errors.any? %>
+    <div id="error_explanation">
+      <h4><%= pluralize(@widget.errors.count, "error") %> prohibited this widget from being saved:</h4>
+
+      <ul>
+        <% @widget.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= f.label :name %>
+  <%= f.text_field :name %>
+
+  <%= f.label :description %>
+  <%= f.text_field :description %>
+
+  <%= f.label :cost %>
+  <%= f.text_field :cost %>
+
+  <div class="form-actions">
+    <input type="submit" value="Create Widget" class="btn btn-primary" />
+    <%= link_to 'Back', widgets_path, class: 'btn' %>
+  </div>
+<% end %>
