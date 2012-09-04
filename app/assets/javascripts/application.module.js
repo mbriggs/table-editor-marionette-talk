@@ -3,6 +3,7 @@
 //= require jquery.errors
 //= require_tree ./table-editor
 //= require_tree ./templates
+//= require jquery.tableEditor
 //= require_self
 
 var App = new Backbone.Marionette.Application(),
@@ -18,10 +19,14 @@ App.addRegions({
 })
 
 App.addInitializer(function(){
-  var widgets = new WidgetCollection(App.bootstrap.widgets),
-      editor = new TableEditor({ collection: widgets })
-
-  App.mainContent.show(editor)
+  $("#content").tableEditor({
+    urlRoot: '/widgets',
+    data: App.bootstrap.widgets,
+    tableTemplate: 'table-editor/table',
+    createTemplate: 'table-editor/new-row',
+    rowTemplate: 'table-editor/row',
+    editRowTemplate: 'table-editor/edit-row'
+  })
 })
 
 module.exports = App

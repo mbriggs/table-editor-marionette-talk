@@ -1,28 +1,17 @@
-var ItemView = Backbone.Marionette.ItemView
-
-
-var RowView = ItemView.extend({
+var RowView = Backbone.Marionette.ItemView.extend({
   tagName: 'tr',
   mode: 'view',
-  viewTemplate: 'table-editor/row',
-  editTemplate: 'table-editor/edit-row',
 
-  events: {
-    'click .actions .destroy': 'delete',
-    'click .actions .edit': 'editMode',
-    'click .actions .cancel-edit': 'viewMode',
-    'click .actions .save': 'save',
-    'keydown input': 'maybeSave'
-  },
+  constructor: function(options){
+    Backbone.Marionette.ItemView.prototype.constructor.apply(this, arguments)
 
-  modelEvents: {
-    'update': 'viewMode',
-    'error': 'showErrors'
-  },
+    applyDefaults(this, 'ui')
 
-  ui: {
-    fields: ':input',
-    controlGroups: '.control-group'
+    applyDefaults(this, 'events')
+    this.delegateEvents()
+
+    applyDefaults(this, 'modelEvents')
+    this.bindBackboneEntityTo(this.model, this.modelEvents)
   },
 
   getTemplate: function(){
@@ -62,5 +51,29 @@ var RowView = ItemView.extend({
     this.ui.controlGroups.errors(errors)
   }
 })
+
+function applyDefaults(view, obj){
+  view[obj] = _.extend(defaults[obj], view[obj])
+}
+
+var defaults = {
+  events: {
+    'click .actions .destroy': 'delete',
+    'click .actions .edit': 'editMode',
+    'click .actions .cancel-edit': 'viewMode',
+    'click .actions .save': 'save',
+    'keydown input': 'maybeSave'
+  },
+
+  modelEvents: {
+    'update': 'viewMode',
+    'error': 'showErrors'
+  },
+
+  ui: {
+    fields: ':input',
+    controlGroups: '.control-group'
+  }
+}
 
 module.exports = RowView

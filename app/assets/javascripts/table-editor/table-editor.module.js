@@ -1,23 +1,20 @@
-var CompositeView = Backbone.Marionette.CompositeView,
-    RowView = require("table-editor/row-view"),
-    CreateView = require("table-editor/create-view")
-
-
-var TableEditor = CompositeView.extend({
+var TableEditor = Backbone.Marionette.CompositeView.extend({
   tagName: 'table',
   className: 'editor table table-striped table-bordered',
-  itemView: RowView,
-  createView: CreateView,
   itemViewContainer: 'tbody',
-  template: 'table-editor/table',
 
-  initialize: function(){
-    this.creatorRow = new this.createView({
+  constructor: function(options){
+    Backbone.Marionette.CompositeView.prototype.constructor.apply(this, arguments)
+
+    this.itemView = options.rowView
+    this.template = options.tableTemplate
+    this.creatorRow = new options.createView({
       collection: this.collection
     })
   },
 
-  onRender: function(){
+  render: function(){
+    Backbone.Marionette.CompositeView.prototype.render.apply(this, arguments)
     this.creatorRow.render()
     this.$el.find("tbody").prepend(this.creatorRow.el)
   }
