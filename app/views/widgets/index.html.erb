@@ -1,0 +1,5 @@
+<script>
+  var App = require("application")
+  App.bootstrap.widgets = <%= @widgets.to_json.html_safe %>
+  App.start()
+</script>

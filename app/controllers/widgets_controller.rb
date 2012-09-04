@@ -7,9 +7,9 @@ class WidgetsController < ApplicationController
       format.json { render json: @widgets }
     end
   end
-  
+
   def index
-    @widgets = Widget.all
+    @widgets = serialize_array(Widget.all)
 
     respond_to do |format|
       format.html

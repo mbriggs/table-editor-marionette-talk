@@ -1,6 +1,9 @@
 //= require sprockets/commonjs
+//= require handlebars.runtime
 //= require jquery
+//= require jquery.serializeObj
 //= require lo-dash
 //= require backbone
+//= require backbone.config
 //= require backbone.marionette
 //= require backbone.marionette.config

@@ -4,24 +4,33 @@
     return JST['templates/'+ template](data)
   }
 
-  // monkey patch based on pull request that is going into the next version
-  // https://github.com/derickbailey/backbone.marionette/pull/231
-  var bindBackboneEntityTo = function(entity, view, bindings){
+
+  var initialize = Backbone.Marionette.View.prototype.constructor
+
+  Backbone.Marionette.View.prototype.constructor = function(){
+    initialize.apply(this, arguments)
+    this.bindBackboneEntityTo(this.model, this.modelEvents)
+    this.bindBackboneEntityTo(this.collection, this.collectionEvents)
+  }
+
+  Backbone.Marionette.View.prototype.bindBackboneEntityTo = function(entity, bindings){
     if (!entity || !bindings) return
+
+    var view = this
 
     _.each(bindings, function(methodName, evt){
       var method = view[methodName]
       if(!method) throw new Error("method '"+ methodName +"' does not exist")
+
       view.bindTo(entity, evt, method, view)
     })
   }
 
-  var renderItemView = Backbone.Marionette.ItemView.prototype.render
+  Backbone.View.prototype.unbindAllFor = function(obj){
+    var view = this
 
-  Backbone.Marionette.ItemView.prototype.render = function(){
-    renderItemView.apply(this, arguments)
-
-    bindBackboneEntityTo(this.model, this.modelEvents)
-    bindBackboneEntityTo(this.collection, this.collectionEvents)
+    _(this._eventBindings).chain().
+      filter(function(b){ return b.obj === obj }).
+      each(function(b){ view.unbindFrom(b) })
   }
-})
+}())
